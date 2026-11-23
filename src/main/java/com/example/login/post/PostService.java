@@ -66,9 +66,8 @@ public class PostService {
                 .parentId(parentId)
                 .userId(userId)
                 .content(dto.getContent())
-                .imageUrl(dto.getImageUrl())
                 .build();
-
+        post.changeImages(dto.getImageUrls());
         //답글 증가
         postRepository.increaseComment(parentId);
         //세이브(답글로)
@@ -117,8 +116,8 @@ public class PostService {
         Post post = Post.builder()
                 .userId(userId)
                 .content(dto.getContent())
-                .imageUrl(dto.getImageUrl())
                 .build();
+        post.changeImages(dto.getImageUrls());
         Post saved = postRepository.save(post);
         feedCache.evict(userId);
         return PostResponseDto.from(saved, false, false);
@@ -132,7 +131,7 @@ public class PostService {
         PostWithLiked row = postRepository.findByIdWithLiked(postId, userId)
                 .orElseThrow(()-> new BusinessException(ErrorCode.POST_NOT_FOUND));
         Post post = row.getPost();
-        post.update(userId, dto.getContent(), dto.getImageUrl());
+        post.update(userId, dto.getContent(), dto.getImageUrls());
 
         return PostResponseDto.from(post, row.getLiked(), row.getReposted());
     }

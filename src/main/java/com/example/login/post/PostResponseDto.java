@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -20,6 +21,7 @@ public class PostResponseDto {
     private boolean liked;
     private boolean reposted;
     private String imageUrl;
+    private List<String> imageUrls;
     private Integer likeCount;
     private Integer commentCount;
     private Integer repostCount;
@@ -39,6 +41,7 @@ public class PostResponseDto {
                 .liked(liked)
                 .reposted(reposted)
                 .imageUrl(entity.getImageUrl())
+                .imageUrls(List.copyOf(entity.getImageUrls()))
                 .likeCount(entity.getLikeCount())
                 .commentCount(entity.getCommentCount())
                 .repostCount(entity.getRepostCount())

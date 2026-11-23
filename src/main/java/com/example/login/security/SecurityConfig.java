@@ -48,14 +48,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // 1. CORS Preflight(OPTIONS) 요청 전면 허용
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-// OPTIONS (Preflight) 요청 전면 허용 (CorsUtils 대신 HttpMethod.OPTIONS 사용)
-                                .requestMatchers(HttpMethod.POST,
-                                        "/api/v1/users/signup",
-                                        "/api/v1/users/login",
-                                        "/api/v1/users/logout",
-                                        "/api/v1/users/find-id",
-                                        "/api/v1/users/password-reset",
-                                        "/api/v1/users/password-reset/confirm").permitAll()
+// OPTIONS (Preflight) 요청 전면 허용 (CorsUtils 대신 HttpMethod.OPTIONS 사용
                                 .requestMatchers("/internal/**").permitAll()
                                 .requestMatchers("/error").permitAll()
                         // 그 외 모든 요청은 인증 필요

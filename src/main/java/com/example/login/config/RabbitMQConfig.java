@@ -13,11 +13,6 @@ public class RabbitMQConfig {
 
     public static final String EXCHANGE_NAME = "sns.events";
 
-    // 추가할 상수
-    public static final String INTEGRATION_USER_DELETED_QUEUE = "integration.user.deleted.queue";
-    // 반송하는 곳
-    public static final String INTEGRATION_USER_DELETED_DLQ = "integration.user.deleted.queue.dlq";
-
     public static final String ROUTING_KEY_USER_DELETED = "user.deleted";
     // 추가할 상수
     public static final String USER_DELETED_QUEUE = "user.deleted.queue";
@@ -35,31 +30,6 @@ public class RabbitMQConfig {
     public MessageConverter jsonMessageConverter(JsonMapper jsonMapper){
         return new JacksonJsonMessageConverter(jsonMapper);
     }
-
-    // 지워진 큐
-    @Bean
-    public Queue integrationUserDeletedQueue() {
-        // durable = true (브로커 재시작 시에도 큐 유지)
-        return QueueBuilder.durable(INTEGRATION_USER_DELETED_QUEUE)
-                .withArgument("x-dead-letter-exchange", "") // 기본 익스체인지 사용
-                .withArgument("x-dead-letter-routing-key", INTEGRATION_USER_DELETED_DLQ)
-                .build();
-    }
-    @Bean
-    public Queue integrationUserDeletedDlq() {
-        return QueueBuilder.durable(INTEGRATION_USER_DELETED_DLQ).build();
-    }
-    @Bean
-    public Binding integrationUserDeletedBinding(
-            Queue integrationUserDeletedQueue,
-            TopicExchange exchange // 기존에 선언된 Exchange 빈 이름/타입에 맞게 주입
-    ) {
-        return BindingBuilder
-                .bind(integrationUserDeletedQueue)
-                .to(exchange)
-                .with(ROUTING_KEY_USER_DELETED);
-    }
-
     // 지워진 큐
     @Bean
     public Queue userDeletedQueue() {

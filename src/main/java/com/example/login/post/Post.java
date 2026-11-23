@@ -4,13 +4,12 @@ import com.example.login.common.BusinessException;
 import com.example.login.common.ErrorCode;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="posts")
@@ -39,6 +38,12 @@ public class Post {
     private String content;
 
     private String imageUrl;
+    @ElementCollection
+    @CollectionTable(name="post_images")
+    @OrderColumn(name="sort_order")
+    @BatchSize(size=100)
+    @Builder.Default
+    private List<String> imageUrls=new ArrayList<>();
 
     @Builder.Default
     @Column(nullable=false)
@@ -63,21 +68,27 @@ public class Post {
     @Column(nullable = false)
     private boolean isDeleted = false;
 
-    public Post(Long userId,
-                String content,
-                String imageUrl){
-        this.userId = userId;
-        this.content = content;
-        this.imageUrl = imageUrl;
-    }
-
-    public void update(Long userId, String content, String imageUrl){
+    public void update(Long userId, String content, List<String> imageUrls){
         if(!userId.equals(this.userId)) {
             throw new BusinessException(ErrorCode.FORBIDDEN);
         }
         this.content = content;
-        this.imageUrl = imageUrl;
+        changeImages(imageUrls);
     }
 
-
+    public void changeImages(List<String> urls){
+        if(urls ==null){
+            this.imageUrl = null;
+        }
+        if(urls.size() == 1){
+            this.imageUrl = urls.getFirst();
+            this.imageUrls.clear();
+            this.imageUrls.addAll(urls);
+        }
+        else{
+            this.imageUrl = urls.getFirst();
+            this.imageUrls.clear();
+            this.imageUrls.addAll(urls);
+        }
+    }
 }

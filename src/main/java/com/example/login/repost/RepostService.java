@@ -70,7 +70,7 @@ public class RepostService {
                 .orElseThrow(()-> new BusinessException(ErrorCode.POST_NOT_FOUND));
 
         // 인용 가능하고, 부모글 있으면 작성
-        Post quotePost = createQuote(dto.getContent(), dto.getImageUrl(), userId, postId);
+        Post quotePost = createQuote(dto.getContent(), dto.getImageUrls(), userId, postId);
 
         Post savedPost = postRepository.save(quotePost);
 
@@ -85,19 +85,20 @@ public class RepostService {
 
     private Post createQuote(
             String content,
-            String imageUrl,
+            List<String> imageUrls,
             Long userId,
             Long postId
     ){
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.POST_NOT_FOUND));
 
-        return Post.builder()
+        Post save = Post.builder()
                 .userId(userId)
                 .content(content)
-                .imageUrl(imageUrl)
                 .quoteId(postId)
                 .build();
+        save.changeImages(imageUrls);
+        return save;
     }
 
     @Transactional(readOnly = true)
