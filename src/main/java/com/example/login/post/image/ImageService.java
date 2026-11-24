@@ -1,7 +1,7 @@
 package com.example.login.post.image;
 
+import com.example.login.common.BusinessException;
 import com.example.login.common.ErrorCode;
-import com.example.login.common.GlobalExceptionHandler;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 
@@ -55,7 +55,7 @@ public class ImageService {
             // 저장할때보다 로드할때 이미지 루트 해킹이 더 쉬움
             // 따라서 로드할때 또한 검증 코드(startsWith를) 넣는게 좋음
             if(!filePath.startsWith(this.uploadPath)){
-                throw new SecurityException("잘못된 파일 경로입니다.");
+                throw new BusinessException(ErrorCode.IMAGE_NOT_FOUND);
             }
 
             Resource resource = new UrlResource(filePath.toUri());
@@ -64,16 +64,16 @@ public class ImageService {
                 return resource;
             }
             else{
-                throw new RuntimeException("파일을 찾을수 없거나 읽을수 없습니다." + fileName);
+                throw new BusinessException(ErrorCode.IMAGE_NOT_FOUND);
             }
         }catch(MalformedURLException e){
-            throw new RuntimeException("잘못된 파일 경로입니다." + fileName, e);
+            throw new BusinessException(ErrorCode.IMAGE_NOT_FOUND);
         }
     }
     // 이미지를 저장한다.
     public String storeImage(MultipartFile file) {
         if (file.isEmpty()) {
-            throw new IllegalArgumentException("빈 파일은 업로드할 수 없습니다.");
+            throw new BusinessException(ErrorCode.INVALID_IMAGE);
         }
 
         String originalFilename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
@@ -84,7 +84,7 @@ public class ImageService {
         // 2. MIME 타입(파일 헤더 기반 Content-Type) 추가 검증 (확장자 위조 방지)
         String contentType = file.getContentType();
         if (contentType == null || !ALLOWED_MIME_TYPES.contains(contentType.toLowerCase())) {
-            throw new IllegalArgumentException("지원하지 않는 이미지 형식입니다. (png, jpeg, gif, webp만 가능)");
+            throw new BusinessException(ErrorCode.INVALID_IMAGE);
         }
 
         // 3. 파일명 암호화 (UUID + 원본파일명 + 현재시간을 SHA-256으로 해싱)
@@ -112,12 +112,12 @@ public class ImageService {
     private String extractAndValidateExtension(String filename) {
         int dotIndex = filename.lastIndexOf('.');
         if (dotIndex == -1 || dotIndex == filename.length() - 1) {
-            throw new IllegalArgumentException("파일 확장자가 존재하지 않습니다.");
+            throw new BusinessException(ErrorCode.INVALID_IMAGE);
         }
 
         String ext = filename.substring(dotIndex + 1).toLowerCase();
         if (!ALLOWED_EXTENSIONS.contains(ext)) {
-            throw new IllegalArgumentException("허용되지 않는 확장자입니다: " + ext);
+            throw new BusinessException(ErrorCode.INVALID_IMAGE);
         }
         return ext;
     }

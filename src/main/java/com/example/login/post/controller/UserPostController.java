@@ -1,11 +1,12 @@
-package com.example.login.post;
+package com.example.login.post.controller;
 
+import com.example.login.post.dto.PostCountDto;
+import com.example.login.post.dto.PostPageResponseDto;
+import com.example.login.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")

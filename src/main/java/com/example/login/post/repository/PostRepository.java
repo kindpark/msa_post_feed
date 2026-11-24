@@ -1,6 +1,9 @@
-package com.example.login.post;
+package com.example.login.post.repository;
 
 
+import com.example.login.post.dto.ParentIdAndCount;
+import com.example.login.post.dto.PostWithLiked;
+import com.example.login.post.entity.Post;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.domain.Limit;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,4 +1,4 @@
-package com.example.login.post;
+package com.example.login.post.dto;
 
 public interface ParentIdAndCount {
     Long getParentId();

@@ -2,6 +2,8 @@ package com.example.login.post;
 
 import com.example.login.config.RabbitMQConfig;
 import com.example.login.event.EventMessage;
+import com.example.login.post.dto.ParentIdAndCount;
+import com.example.login.post.repository.PostRepository;
 import com.example.login.postlike.PostLikeRepository;
 import com.example.login.repost.RepostRepository;
 import lombok.RequiredArgsConstructor;

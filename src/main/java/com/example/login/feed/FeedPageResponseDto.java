@@ -1,6 +1,6 @@
 package com.example.login.feed;
 
-import com.example.login.post.PostResponseDto;
+import com.example.login.post.dto.PostResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

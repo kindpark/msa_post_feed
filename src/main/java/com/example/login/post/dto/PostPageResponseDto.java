@@ -1,4 +1,4 @@
-package com.example.login.post;
+package com.example.login.post.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

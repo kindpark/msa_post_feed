@@ -1,4 +1,4 @@
-package com.example.login.post;
+package com.example.login.post.entity;
 
 import com.example.login.common.BusinessException;
 import com.example.login.common.ErrorCode;
@@ -35,6 +35,7 @@ public class Post {
 
     private Long quoteId;
 
+    @Column(length=1000)
     private String content;
 
     private String imageUrl;
@@ -77,18 +78,11 @@ public class Post {
     }
 
     public void changeImages(List<String> urls){
-        if(urls ==null){
-            this.imageUrl = null;
-        }
-        if(urls.size() == 1){
-            this.imageUrl = urls.getFirst();
-            this.imageUrls.clear();
-            this.imageUrls.addAll(urls);
-        }
-        else{
-            this.imageUrl = urls.getFirst();
-            this.imageUrls.clear();
-            this.imageUrls.addAll(urls);
-        }
+        List<String> newImageUrls = (urls == null) ? List.of() : urls;
+
+        this.imageUrls.clear();
+        this.imageUrls.addAll(newImageUrls);
+
+        this.imageUrl = newImageUrls.isEmpty() ? null : newImageUrls.getFirst();
     }
 }

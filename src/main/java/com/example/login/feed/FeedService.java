@@ -1,8 +1,8 @@
 package com.example.login.feed;
 
-import com.example.login.post.Post;
-import com.example.login.post.PostRepository;
-import com.example.login.post.PostResponseDto;
+import com.example.login.post.entity.Post;
+import com.example.login.post.repository.PostRepository;
+import com.example.login.post.dto.PostResponseDto;
 import com.example.login.postlike.PostLikeRepository;
 import com.example.login.repost.RepostRepository;
 import org.springframework.beans.factory.annotation.Value;

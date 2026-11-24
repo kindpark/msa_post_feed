@@ -19,6 +19,8 @@ public enum ErrorCode {
     TOO_MANY_IDS(HttpStatus.BAD_REQUEST, "TOO_MANY_IDS", "한 번에 최대 100명까지 조회할 수 있습니다."),
     INVALID_NICKNAME(HttpStatus.BAD_REQUEST, "INVALID_NICKNAME", "닉네임은 공백 없이 1~50자여야 합니다."),
 
+    INVALID_IMAGE(HttpStatus.BAD_REQUEST, "INVALID_IMAGE", "PNG, JPG, GIF, WEBP 이미지 파일만 올릴 수 있습니다."),
+
     // 401 UNAUTHORIZED
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "INVALID_CREDENTIALS", "이메일 또는 비밀번호가 일치하지 않습니다."),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "UNAUTHORIZED", "로그인이 필요하거나 인증 자격 증명이 유효하지 않습니다."),
@@ -30,6 +32,7 @@ public enum ErrorCode {
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_NOT_FOUND", "존재하지 않는 회원입니다."),
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "POST_NOT_FOUND", "존재하지 않는 게시글입니다."),
     NOT_FOUND(HttpStatus.NOT_FOUND, "NOT_FOUND", "요청한 경로를 찾을 수 없습니다."),
+    IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "IMAGE_NOT_FOUND", "존재하지 않는 이미지입니다."),
    // 405
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "METHOD_NOT_ALLOWED", "지원하지 않는 HTTP 메서드입니다."),
 
@@ -38,6 +41,9 @@ public enum ErrorCode {
     DUPLICATE_RESOURCE(HttpStatus.CONFLICT, "DUPLICATE_RESOURCE", "이미 존재하는 데이터입니다."),
     DUPLICATE_HANDLE(HttpStatus.CONFLICT, "DUPLICATE_HANDLE", "이미 존재하는 핸들입니다."),
     LOCK_CONFLICT(HttpStatus.CONFLICT, "LOCK_CONFLICT", "다른 요청과 충돌했습니다. 잠시 후 다시 시도해 주세요."),
+
+    // 413
+    FILE_TOO_LARGE(HttpStatus.valueOf(413), "FILE_TOO_LARGE", "이미지는 5MB 이하만 올릴 수 있습니다."),
 
     // 500 INTERNAL SERVER ERROR
     INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL_ERROR", "서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요."),

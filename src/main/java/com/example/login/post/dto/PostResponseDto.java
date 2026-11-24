@@ -1,5 +1,6 @@
-package com.example.login.post;
+package com.example.login.post.dto;
 
+import com.example.login.post.entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

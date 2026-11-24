@@ -1,0 +1,8 @@
+**/application-secret.properties
+.git
+.gradle
+.idea
+build
+login.json
+signup.json
+cookies.txt

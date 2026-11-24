@@ -1,5 +1,9 @@
-package com.example.login.post;
+package com.example.login.post.controller;
 
+import com.example.login.post.dto.PostPageResponseDto;
+import com.example.login.post.dto.PostRequestDto;
+import com.example.login.post.dto.PostResponseDto;
+import com.example.login.post.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +41,7 @@ public class PostController {
     //C
     @PostMapping
     public ResponseEntity<PostResponseDto> createPost(
-            @RequestBody PostRequestDto dto,
+            @RequestBody @Valid PostRequestDto dto,
             @AuthenticationPrincipal Long userId
     ){
         return ResponseEntity.ok(postService.createPost(dto, userId));
@@ -74,15 +78,16 @@ public class PostController {
     public ResponseEntity<PostResponseDto> updatePost(
             @AuthenticationPrincipal Long userId,
             @PathVariable Long postId,
-            @RequestBody PostRequestDto dto) {
+            @RequestBody @Valid PostRequestDto dto) {
             return ResponseEntity.ok(postService.updatePost(postId, userId, dto));
     }
     //삭제
     @DeleteMapping("/{postId}")
-    public ResponseEntity<PostResponseDto> deletePost(
+    public ResponseEntity<Void> deletePost(
             @PathVariable Long postId,
             @AuthenticationPrincipal Long userId
     ){
-        return ResponseEntity.ok(postService.deletePost(postId, userId));
+        postService.deletePost(postId, userId);
+        return ResponseEntity.noContent().build();
     }
 }

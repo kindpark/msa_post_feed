@@ -1,9 +1,16 @@
-package com.example.login.post;
+package com.example.login.post.service;
 
 import com.example.login.common.BusinessException;
 import com.example.login.common.ErrorCode;
 import com.example.login.event.EventMessage;
 import com.example.login.feed.FeedCache;
+import com.example.login.post.dto.PostWithLiked;
+import com.example.login.post.dto.PostCountDto;
+import com.example.login.post.dto.PostPageResponseDto;
+import com.example.login.post.dto.PostRequestDto;
+import com.example.login.post.dto.PostResponseDto;
+import com.example.login.post.entity.Post;
+import com.example.login.post.repository.PostRepository;
 import com.example.login.repost.RepostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -138,7 +145,7 @@ public class PostService {
     //D
     //soft delete로 방향 수정
     @Transactional
-    public PostResponseDto deletePost(Long postId, Long userId){
+    public void deletePost(Long postId, Long userId){
         // 삭제할 게시글이 존재하는지 확인 및 조회
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.POST_NOT_FOUND));
@@ -154,14 +161,12 @@ public class PostService {
         //원글이 아닐때
         if(post.getParentId() != null){
             postRepository.decreaseComment(post.getParentId());
-            feedCache.evict(userId);
         }
         if(post.getQuoteId() != null){
             postRepository.decreaseQuoteCount(post.getQuoteId());
-            feedCache.evict(userId);
         }
-        // 삭제된 게시글 정보를 DTO로 변환하여 반환
-        return PostResponseDto.from(post, false, false);
+        // 원글·답글·인용 모두 내 피드 캐시를 비운다
+        feedCache.evict(userId);
     }
 
     @Transactional(readOnly = true)

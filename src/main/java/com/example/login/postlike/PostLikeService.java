@@ -3,11 +3,10 @@ package com.example.login.postlike;
 import com.example.login.common.BusinessException;
 import com.example.login.common.ErrorCode;
 import com.example.login.event.EventMessage;
-import com.example.login.post.Post;
-import com.example.login.post.PostRepository;
+import com.example.login.post.entity.Post;
+import com.example.login.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

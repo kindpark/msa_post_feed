@@ -1,7 +1,7 @@
 package com.example.login.repost;
 
-import com.example.login.post.PostRequestDto;
-import com.example.login.post.PostResponseDto;
+import com.example.login.post.dto.PostRequestDto;
+import com.example.login.post.dto.PostResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

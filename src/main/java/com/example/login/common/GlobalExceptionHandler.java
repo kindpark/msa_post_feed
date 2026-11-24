@@ -8,9 +8,13 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartException;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 /**
@@ -46,6 +50,20 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> handleUnreadable(HttpMessageNotReadableException e) {
         return toResponse(ErrorResponse.of(ErrorCode.VALIDATION_ERROR, "요청 본문 형식이 올바르지 않습니다."));
+    }
+
+    /** 파일 크기 제한 초과 (spring.servlet.multipart.max-file-size / max-request-size) */
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<ErrorResponse> handleTooLarge(MaxUploadSizeExceededException e) {
+        return toResponse(ErrorResponse.of(ErrorCode.FILE_TOO_LARGE));
+    }
+
+    /** 필수 파일·파라미터가 없거나 multipart 요청이 아닌 경우 */
+    @ExceptionHandler({MissingServletRequestPartException.class,
+            MissingServletRequestParameterException.class,
+            MultipartException.class})
+    public ResponseEntity<ErrorResponse> handleMissingPart(Exception e) {
+        return toResponse(ErrorResponse.of(ErrorCode.VALIDATION_ERROR, "요청에 필요한 파일이나 값이 없습니다."));
     }
 
     /** DB 제약 위반 (예: 동시에 같은 이메일로 가입해 unique 제약에 걸린 경우) */
