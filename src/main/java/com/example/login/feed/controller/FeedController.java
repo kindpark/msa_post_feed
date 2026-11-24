@@ -1,5 +1,7 @@
-package com.example.login.feed;
+package com.example.login.feed.controller;
 
+import com.example.login.feed.FeedPageResponseDto;
+import com.example.login.feed.FeedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

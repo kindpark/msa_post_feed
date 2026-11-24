@@ -1,4 +1,4 @@
-package com.example.login.feed;
+package com.example.login.feed.repository;
 import com.example.login.common.BusinessException;
 import com.example.login.common.ErrorCode;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +15,7 @@ import java.util.List;
 @Component
 @ConditionalOnProperty(name="feed.follow-reader",
         havingValue = "http")
-public class HttpFollowReader implements FollowReader{
+public class HttpFollowReader implements FollowReader {
     private final RestClient client;
 
     // 초기화용 생성자

@@ -1,4 +1,4 @@
-package com.example.login.feed;
+package com.example.login.feed.repository;
 
 import java.util.List;
 

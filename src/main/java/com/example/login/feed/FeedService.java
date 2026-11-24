@@ -1,5 +1,6 @@
 package com.example.login.feed;
 
+import com.example.login.feed.repository.FollowReader;
 import com.example.login.post.entity.Post;
 import com.example.login.post.repository.PostRepository;
 import com.example.login.post.dto.PostResponseDto;
